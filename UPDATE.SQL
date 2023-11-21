@@ -1,0 +1,24 @@
+--Mettre a jour le NO d'un employe
+SET SERVEROUTPUT ON
+SET VERIFY OFF
+ACCEPT NOFOUR PROMPT "Entrer le numero de fournisseurs: "
+ACCEPT NOM PROMPT  "Entrer le nom de produit: " 
+DECLARE
+    var_NOFOUR COULIBALY.NA_PRODUITS.NOFOUR%TYPE:='&NOFOUR';
+	var_NOM COULIBALY.NA_PRODUITS.NOM%TYPE:='&NOM';
+BEGIN
+
+    
+--2) Mise a jour du NOM
+	UPDATE COULIBALY.NA_PRODUITS SET NOFOUR=:NEW.NOFOUR WHERE NOFOUR=:OLD.NOFOUR;
+  --  UPDATE COULIBALY.NA_PRODUITS SET NOM = var_NOM WHERE NOFOUR = var_NOFOUR;
+    COMMIT;
+    DBMS_OUTPUT.PUT_LINE('Mise a jour du NOM: '||var_NOM ||'de fournisseur: '||var_NOFOUR);
+    
+
+    
+END;
+/
+
+
+SET VERIFY ON

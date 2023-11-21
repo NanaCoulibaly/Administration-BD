@@ -1,0 +1,44 @@
+--insertion de fournisseurs*******************
+--Section SQLPLUS
+SET VERIFY OFF 
+PROMPT*************Insertion de fournisseurs*******************
+ACCEPT NOFOUR NUMBER PROMPT "Entrer le numero du fournisseur :"
+ACCEPT NOMFOUR CHAR PROMPT "Entrer le NOm du fournisseur :"
+ACCEPT NO CHAR PROMPT "Entrer le numero du fournisseur :"
+ACCEPT RUE CHAR PROMPT "Entrer la RUE du fournisseur :"
+ACCEPT VILLE CHAR PROMPT "Entrerla VILLE du fournisseur :"
+ACCEPT CODEPOSTAL CHAR PROMPT "Entrer le code postal du fournisseur :"
+ACCEPT TELEPHONE CHAR PROMPT "Entrer le TELEPHONE du fournisseur :"
+DECLARE 
+err_integre EXCEPTION;
+PRAGMA EXCEPTION_INIT(err_integre,-2291);
+--Variable PL/SQL initialiser a la variable SQL/PLUS
+--Affectation en PL/SQL
+	var_NOFOUR COULIBALY.NA_FOURNISSEURS.NOFOUR%TYPE :='&NOFOUR';
+	var_NOMFOUR COULIBALY.NA_FOURNISSEURS.NOMFOUR%TYPE :='&NOMFOUR';
+	var_NO COULIBALY.NA_FOURNISSEURS.NO%TYPE :='&NO';
+	var_RUE COULIBALY.NA_FOURNISSEURS.RUE%TYPE :='&RUE';
+	var_VILLE COULIBALY.NA_FOURNISSEURS.VILLE%TYPE :='&VILLE';
+	var_CODEPOSTAL COULIBALY.NA_FOURNISSEURS.CODEPOSTAL%TYPE :='&CODEPOSTAL';
+	var_TELEPHONE COULIBALY.NA_FOURNISSEURS.TELEPHONE%TYPE :='&TELEPHONE';
+--Section SQL
+BEGIN
+	INSERT INTO COULIBALY.NA_FOURNISSEURS(NOFOUR,NOMFOUR,NO,RUE,VILLE,CODEPOSTAL,TELEPHONE)VALUES(var_NOFOUR,var_NOMFOUR,var_NO,var_RUE,var_VILLE,var_CODEPOSTAL,var_TELEPHONE);
+	COMMIT;
+	DBMS_OUTPUT.PUT_LINE('Insertion de NOuveau fournisseur reussi');
+	--Afficher le NOuveau fournisseur ajoute
+	DBMS_OUTPUT.PUT_LINE(RPAD('NOFOUR',10)||RPAD('NOMFOUR',10)||RPAD('NO',10)||RPAD('RUE',10)||RPAD('VILLE',10)||RPAD('CODEPOSTAL',10)||'TELEPHONE');
+	FOR maliste IN(SELECT * FROM COULIBALY.NA_FOURNISSEURS where NOFOUR=var_NOFOUR)LOOP
+	DBMS_OUTPUT.PUT_LINE(RPAD(maliste.NOFOUR,10)||RPAD(maliste.NOMFOUR,10)||RPAD(maliste.NO,10)||RPAD(maliste.RUE,10)||RPAD(maliste.VILLE,10)||RPAD(maliste.CODEPOSTAL,10)||RPAD(maliste.TELEPHONE,15));
+	END LOOP;
+EXCEPTION
+	WHEN dup_val_on_index THEN
+		DBMS_OUTPUT.PUT_LINE('Le NOFOUR existe deja!');
+		WHEN err_integre THEN
+		DBMS_OUTPUT.PUT_LINE('Le NOFOUR n''existe pas!');
+END;
+/
+--Section SQLPLUS
+SET VERIFY ON
+PAUSE "Appuyez sur une touche pour continuer..."
+@C:\Users\Nana\ProjetMABD\Sous_Menu.sql
